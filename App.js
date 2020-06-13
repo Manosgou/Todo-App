@@ -17,12 +17,31 @@ export default class App extends Component {
     super(props);
     this.state = {
       showMenu: false,
-      data: [
-        { title: 'Go to the office', description: 'Make important phone calls', importance: 1, isFinished: true },
-        { title: 'Prepare tasks for today', description: 'Make important phone calls', importance: 2, isFinished: false },
-        { title: 'Team meeting', description: 'Make important phone calls', importance: 3, isFinished: false },
-        { title: 'Commit tasks changed', description: 'Make important phone calls', importance: 2, isFinished: false },
-
+      tasks: [
+        {
+          id: '1',
+          title: 'Go to the office',
+          description: 'Make important phone calls',
+          importance: 1,
+        },
+        {
+          id: '2',
+          title: 'Prepare tasks for today',
+          description: 'Make important phone calls',
+          importance: 2,
+        },
+        {
+          id: '3',
+          title: 'Team meeting',
+          description: 'Make important phone calls',
+          importance: 3,
+        },
+        {
+          id: '4',
+          title: 'Commit tasks changed',
+          description: 'Make important phone calls',
+          importance: 2,
+        },
       ]
     };
 
@@ -31,12 +50,33 @@ export default class App extends Component {
 
 
 
-
   onPresstoggleModal() {
     this.setState({ showMenu: !this.state.showMenu });
   }
 
 
+
+
+  addTask = task => {
+    this.setState({
+      tasks: [...this.state.tasks, {
+        ...task,
+        id: this.state.tasks.length + 1,
+      }]
+
+    });
+    console.log(this.state.tasks)
+  };
+
+
+
+  deleteTask = taskId => {
+    const task = this.state.tasks.filter(task => task.id != taskId);
+    this.setState({ tasks: task })
+    console.log(this.state.tasks)
+
+
+  };
 
 
 
@@ -57,27 +97,28 @@ export default class App extends Component {
 
     }
 
-    const Item = ({ title, description, importance }) => {
+    const Item = ({ id, title, description, importance, deleteTask }) => {
 
       return (
+
         <View style={styles.task}>
           <Text style={styles.taskTitle}>{title}</Text>
           <Text style={styles.taskDescription}>{description}</Text>
           <Text style={styles.taskImportance}>Importance:<Text>{importance}</Text></Text>
           <View style={styles.iconsContainer}>
             <View style={styles.icons}>
-            <TouchableOpacity>
+              <TouchableOpacity>
 
-              <MaterialIcons name="done" size={25} color="black" />
+                <MaterialIcons name="done" size={25} color="black" />
 
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <MaterialIcons name="mode-edit" size={25} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity  >
+                <MaterialIcons name="mode-edit" size={25} color="black" />
 
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <MaterialIcons name="delete" size={25} color="black" />
-            </TouchableOpacity>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => deleteTask(id)}>
+                <MaterialIcons name="delete" size={25} color="black" />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -94,16 +135,17 @@ export default class App extends Component {
           visible={this.state.showMenu}
           onRequestClose={() => this.onPresstoggleModal()}>
 
-          <AddTask closeModal={() => this.onPresstoggleModal()} />
+          <AddTask closeModal={() => this.onPresstoggleModal()} addTask={this.addTask} />
         </Modal>
 
         <Text style={styles.title}>Tasks</Text>
         <View style={styles.bar} />
 
         <FlatList
-
-          data={this.state.data}
-          renderItem={({ item }) => <Item style={styles.item} title={item.title} description={item.description} importance={item.importance} />}
+          renderItem={this.Item}
+          data={this.state.tasks}
+          renderItem={({ item }) => <Item style={styles.item} id={item.id} deleteTask={this.deleteTask} title={item.title} description={item.description} importance={item.importance} />}
+          keyExtractor={item => item.id}
         />
         <FloatActionButton />
 
@@ -174,13 +216,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 12,
     bottom: 12,
-    
+    marginRight: 20
 
   },
-  icons:{
-    flexDirection:'row',
-    
-    
+  icons: {
+    flexDirection: 'row',
+
+
   }
 
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Picker } from 'react-native';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 export default class AddData extends Component {
     constructor(props) {
         super(props);
@@ -26,9 +28,12 @@ export default class AddData extends Component {
     }
 
 
-
-
-
+    createTask() {
+        const {title, description, importance } = this.state;
+        const task = {title, description, importance };
+        this.props.addTask(task)
+        this.props.closeModal();
+    }
 
     render() {
         const Reminder = () => {
@@ -59,13 +64,16 @@ export default class AddData extends Component {
                     <Text style={styles.menuHeader}>Add Task</Text>
                     <Text>Title</Text>
                     <TextInput
+                        placeholder="e.x Go to the market"
                         style={styles.textInput}
-
+                        onChangeText={value => this.handleInputChange('title', value)}
 
                     />
                     <Text>Description</Text>
                     <TextInput
+                        placeholder="e.x Grab some milk"
                         style={styles.textInput}
+                        onChangeText={value => this.handleInputChange('description', value)}
 
 
                     />
@@ -85,6 +93,7 @@ export default class AddData extends Component {
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity
                             style={styles.buttons}
+                            onPress={() => { this.createTask() }}
 
                         >
                             <Text style={styles.buttonsText} >Add</Text>
