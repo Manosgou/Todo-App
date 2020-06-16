@@ -36,5 +36,6 @@ export default class FloatActionButton extends Component{
         height: 70,
         backgroundColor: 'coral',
         borderRadius: 50,
+        elevation:5
       },
   })

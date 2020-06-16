@@ -29,8 +29,8 @@ export default class AddData extends Component {
 
 
     createTask() {
-        const {title, description, importance } = this.state;
-        const task = {title, description, importance };
+        const { title, description, importance } = this.state;
+        const task = { title, description, importance };
         this.props.addTask(task)
         this.props.closeModal();
     }
@@ -82,7 +82,7 @@ export default class AddData extends Component {
                     <Picker
                         defaultValue='test'
                         selectedValue={this.state.importance || ''}
-                        style={{ height: 50, width: 180 }}
+                        style={{ height: 50, width: 220 }}
                         onValueChange={value => this.handleInputChange('importance', value)}>
                         <Picker.Item label="Level of importance" value="0" color="grey" />
                         <Picker.Item label="Least important" value="1" />
@@ -91,6 +91,7 @@ export default class AddData extends Component {
                     </Picker>
                     <Reminder />
                     <View style={styles.buttonsContainer}>
+
                         <TouchableOpacity
                             style={styles.buttons}
                             onPress={() => { this.createTask() }}
@@ -99,14 +100,18 @@ export default class AddData extends Component {
                             <Text style={styles.buttonsText} >Add</Text>
 
                         </TouchableOpacity>
+
+
                         <TouchableOpacity
                             style={styles.buttons}
                             onPress={this.props.closeModal}
+
 
                         >
                             <Text style={styles.buttonsText}>Cancel</Text>
 
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </View>
@@ -121,18 +126,23 @@ export default class AddData extends Component {
 const styles = StyleSheet.create({
 
     mainContainer: {
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+
 
     },
     menuContainer: {
+
         alignItems: 'center',
         justifyContent: 'space-evenly',
         borderRadius: 30,
         backgroundColor: 'white',
-        width: '80%',
-        height: '70%',
-        elevation: 3
+        width: '90%',
+        height: '95%',
+        elevation: 3,
+        flexBasis: '65%'
+
 
     },
     textInput: {
@@ -143,11 +153,11 @@ const styles = StyleSheet.create({
     buttons: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 80,
+        width: 100,
         height: 40,
         backgroundColor: 'coral',
         borderRadius: 50,
-
+        elevation:2
     },
     buttonsText: {
         color: 'white',
@@ -168,10 +178,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
-
-
-    },
-
-
+        padding: 15,
+        justifyContent: 'space-between',
+},
 });

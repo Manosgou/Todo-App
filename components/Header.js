@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 export default function Header() {
-    return (
+    return (    
         <View style={styles.header}>
             <Text style={styles.title}>To<Text style={styles.do}>do</Text></Text>
 
