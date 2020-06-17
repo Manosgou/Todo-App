@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
 
 
 
-
 //components
 import Hededer from './components/Header.js';
 import AddTask from './components/AddTask.js';
@@ -22,32 +21,32 @@ export default class App extends Component {
           title: 'Go to the office',
           description: 'Make important phone calls',
           importance: 1,
-          isFinished:false,
-          created:'01/02/2018'
+          isFinished: false,
+          created: '01/02/2018'
         },
         {
           id: '2',
           title: 'Prepare tasks for today',
           description: 'Make important phone calls',
           importance: 2,
-          isFinished:false,
-          created:'12/05/2012'
+          isFinished: false,
+          created: '12/05/2012'
         },
         {
           id: '3',
           title: 'Team meeting',
           description: 'Make important phone calls',
           importance: 3,
-          isFinished:false,
-          created:'03/12/1991'
+          isFinished: false,
+          created: '03/12/1991'
         },
         {
           id: '4',
           title: 'Commit tasks changed',
           description: 'Make important phone calls',
           importance: 2,
-          isFinished:false,
-          created:'27/05/2008'
+          isFinished: false,
+          created: '27/05/2008'
         },
       ]
     };
@@ -63,13 +62,13 @@ export default class App extends Component {
 
 
   addTask = task => {
-    let date =  new Date()
+    let date = new Date()
     this.setState({
       tasks: [...this.state.tasks, {
         ...task,
         id: (this.state.tasks.length + 1).toString(),
-        isFinished:false,
-        created:date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
+        isFinished: false,
+        created: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
       }]
 
     });
@@ -89,8 +88,8 @@ export default class App extends Component {
   finishTask = (taskId, isFinished) => {
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === taskId);
-    tasks[index].isFinished=!isFinished
-    this.setState({ tasks});
+    tasks[index].isFinished = !isFinished
+    this.setState({ tasks });
     console.log(this.state.tasks)
   }
 
@@ -123,7 +122,7 @@ export default class App extends Component {
 
     return (
 
-      <View style={styles.container}>
+      <View style={{flex: 1}}>
         <Hededer />
         <Modal animationType="slide"
           transparent={true}
@@ -134,11 +133,26 @@ export default class App extends Component {
         </Modal>
         <Text style={styles.title}>Tasks</Text>
         <View style={styles.bar} />
-
+        <View style={styles.info}>
+          <View style={styles.infoContainer}>
+            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15}}>Total Tasks</Text>
+            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic'}}>{this.state.tasks.length}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15 }}>Remain</Text>
+            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15 }}>Completed</Text>
+            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+          </View>
+        </View>
+        <View style={styles.bar} />
         <FlatList
           data={this.state.tasks}
-          renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} title={item.title} description={item.description} importance={item.importance} />}
+          renderItem={({ item }) => <Item id={item.id} created={item.created} moveUP={this.moveUP} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} title={item.title} description={item.description} importance={item.importance} />}
           keyExtractor={item => item.id}
+          onDragEnd={({ tasks }) => this.setState({ tasks })}
         />
 
 
@@ -158,10 +172,6 @@ export default class App extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-  },
   title: {
     textAlign: 'center',
     fontSize: 35,
@@ -175,6 +185,20 @@ const styles = StyleSheet.create({
     height: 0.5
 
   },
+  info: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    marginTop: 12,
+    marginBottom: 12
+  },
+  infoContainer: {
+    width: 100,
+    height: 100,
+    backgroundColor: 'coral',
+    borderRadius: 25,
+    elevation: 2
+
+  }
 
 });
 

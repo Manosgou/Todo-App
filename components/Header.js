@@ -1,35 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 
 
 
 
-export default function Header() {
-    return (    
-        <View style={styles.header}>
-            <Text style={styles.title}>To<Text style={styles.do}>do</Text></Text>
+export default class Header extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <View style={styles.header}>
+                <Text style={styles.title}>To<Text style={{color: 'black'}}>do</Text></Text>
+            </View>
 
-        </View>
 
-
-    );
+        );
+    }
 }
 
 const styles = StyleSheet.create({
     header: {
-     height:80,
-     paddingTop:35,
-     backgroundColor:'coral',
+        height: 80,
+        paddingTop: 35,
+        backgroundColor: 'coral',
     },
-    title:{
-        textAlign:'center',
-        fontSize:25,
-        color:'white',
-        fontWeight:'bold',
-        letterSpacing:4
+    title: {
+        textAlign: 'center',
+        fontSize: 25,
+        color: 'white',
+        fontWeight: 'bold',
+        letterSpacing: 4
     },
-    do:{
-        color:'black'
-    }
-  });
+});

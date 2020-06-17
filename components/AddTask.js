@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Picker } from 'react-native';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { AntDesign } from '@expo/vector-icons';
+
 
 export default class AddData extends Component {
     constructor(props) {
@@ -30,9 +31,25 @@ export default class AddData extends Component {
 
     createTask() {
         const { title, description, importance } = this.state;
-        const task = { title, description, importance };
-        this.props.addTask(task)
-        this.props.closeModal();
+        if (title.trim() != "") {
+            if (description.trim() != "") {
+                if (importance != "") {
+                    const task = { title, description, importance };
+                    this.props.addTask(task);
+                    this.props.closeModal();
+
+                } else {
+                    alert("You must set the importance level of the task.")
+                }
+            } else {
+                alert("You must add a description to your task.")
+            }
+        } else {
+            alert("You must add a title to your task.")
+        }
+
+
+
     }
 
     render() {
@@ -61,6 +78,9 @@ export default class AddData extends Component {
 
             <View style={styles.mainContainer}>
                 <View style={styles.menuContainer}>
+                    <TouchableOpacity style={styles.closeIcon} onPress={this.props.closeModal}>
+                        <AntDesign name="closecircle" size={25} color="black" />
+                    </TouchableOpacity>
                     <Text style={styles.menuHeader}>Add Task</Text>
                     <Text>Title</Text>
                     <TextInput
@@ -90,7 +110,7 @@ export default class AddData extends Component {
                         <Picker.Item label="Most important" value="3" />
                     </Picker>
                     <Reminder />
-                    <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
 
                         <TouchableOpacity
                             style={styles.buttons}
@@ -102,15 +122,6 @@ export default class AddData extends Component {
                         </TouchableOpacity>
 
 
-                        <TouchableOpacity
-                            style={styles.buttons}
-                            onPress={this.props.closeModal}
-
-
-                        >
-                            <Text style={styles.buttonsText}>Cancel</Text>
-
-                        </TouchableOpacity>
 
                     </View>
                 </View>
@@ -157,7 +168,7 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: 'coral',
         borderRadius: 50,
-        elevation:2
+        elevation: 2
     },
     buttonsText: {
         color: 'white',
@@ -166,7 +177,7 @@ const styles = StyleSheet.create({
     },
     menuHeader: {
         fontWeight: 'bold',
-        fontSize: 25,
+        fontSize: 30,
 
     },
     title: {
@@ -176,9 +187,15 @@ const styles = StyleSheet.create({
         marginTop: 20,
 
     },
-    buttonsContainer: {
+    buttonContainer: {
         flexDirection: 'row',
         padding: 15,
         justifyContent: 'space-between',
-},
+    }, 
+    closeIcon: {
+        position: 'absolute',
+        top: 15,
+        right: 15
+
+    }
 });
