@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
 
 
@@ -14,6 +16,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fontsLoaded: false,
       addTaskModal: false,
       tasks: [
         {
@@ -52,6 +55,12 @@ export default class App extends Component {
     };
 
   }
+
+  getFonts = () => Font.loadAsync({
+    'Lobster': require('./assets/fonts/Lobster-Regular.ttf'),
+    'Oxygen': require('./assets/fonts/Oxygen-Bold.ttf'),
+  });
+
 
 
 
@@ -118,55 +127,62 @@ export default class App extends Component {
   }
 
   render() {
+    if (this.state.fontsLoaded) {
 
+      return (
 
-    return (
+        <View style={{ flex: 1 }}>
+          <Hededer />
+          <Modal animationType="slide"
+            transparent={true}
+            visible={this.state.addTaskModal}
+            onRequestClose={() => this.onPresstoggleAddTaskModal()}>
 
-      <View style={{flex: 1}}>
-        <Hededer />
-        <Modal animationType="slide"
-          transparent={true}
-          visible={this.state.addTaskModal}
-          onRequestClose={() => this.onPresstoggleAddTaskModal()}>
-
-          <AddTask closeModal={() => this.onPresstoggleAddTaskModal()} addTask={this.addTask} />
-        </Modal>
-        <Text style={styles.title}>Tasks</Text>
-        <View style={styles.bar} />
-        <View style={styles.info}>
-          <View style={styles.infoContainer}>
-            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15}}>Total Tasks</Text>
-            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic'}}>{this.state.tasks.length}</Text>
+            <AddTask closeModal={() => this.onPresstoggleAddTaskModal()} addTask={this.addTask} />
+          </Modal>
+          <Text style={styles.title}>Tasks</Text>
+          <View style={styles.bar} />
+          <View style={styles.info}>
+            <View style={styles.infoContainer}>
+              <Text style={{ textAlign: 'center', marginTop: 15,  fontSize: 15,fontFamily:'Oxygen' }}>Total Tasks</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen' }}>{this.state.tasks.length}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={{ textAlign: 'center', marginTop: 15,fontSize: 15,fontFamily:'Oxygen' }}>Remain</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen'}}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={{ textAlign: 'center', marginTop: 15,fontSize: 15,fontFamily:'Oxygen' }}>Completed</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen'}}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+            </View>
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15 }}>Remain</Text>
-            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-            <Text style={{ textAlign: 'center', marginTop: 15, fontWeight: 'bold', fontSize: 15 }}>Completed</Text>
-            <Text style={{ textAlign: 'center', marginTop: 10,fontSize:30,fontWeight:'bold',fontStyle:'italic' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
-          </View>
+          <View style={styles.bar} />
+          <FlatList
+            data={this.state.tasks}
+            renderItem={({ item }) => <Item id={item.id} created={item.created} moveUP={this.moveUP} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} title={item.title} description={item.description} importance={item.importance} />}
+            keyExtractor={item => item.id}
+            onDragEnd={({ tasks }) => this.setState({ tasks })}
+          />
+
+
+          <FloatActionButton buttonState={this.state.addTaskModal} onFABPress={() => this.onPresstoggleAddTaskModal()} />
+
+
         </View>
-        <View style={styles.bar} />
-        <FlatList
-          data={this.state.tasks}
-          renderItem={({ item }) => <Item id={item.id} created={item.created} moveUP={this.moveUP} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} title={item.title} description={item.description} importance={item.importance} />}
-          keyExtractor={item => item.id}
-          onDragEnd={({ tasks }) => this.setState({ tasks })}
-        />
-
-
-        <FloatActionButton buttonState={this.state.addTaskModal} onFABPress={() => this.onPresstoggleAddTaskModal()} />
-
-
-      </View>
 
 
 
-    );
+      );
+    } else {
+      return (
+        <AppLoading
+          startAsync={this.getFonts}
+          onFinish={() => {this.setState({fontsLoaded:true})}} />)
+    }
   }
-
 }
+
+
 
 
 
@@ -177,6 +193,8 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     marginTop: 25,
+  
+    
 
   },
   bar: {
@@ -189,7 +207,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     marginTop: 12,
-    marginBottom: 12
+    marginBottom: 12,
+    
   },
   infoContainer: {
     width: 100,

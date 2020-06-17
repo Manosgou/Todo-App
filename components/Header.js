@@ -28,9 +28,11 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 45,
         color: 'white',
-        fontWeight: 'bold',
-        letterSpacing: 4
+        letterSpacing: 4,
+        fontFamily:'Lobster',
+        bottom:10
+        
     },
 });

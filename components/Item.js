@@ -22,7 +22,7 @@ export default class Item extends Component {
 
 
                 <TextInput style={[styles.taskTitle, { color: this.state.isFinished === false ? "black" : "white" }, { textDecorationLine: this.state.isFinished === false ? 'none' : "line-through" }]} value={this.props.title} onChangeText={value => this.props.onTitleChange(value, this.props.id)} />
-                <TextInput style={[styles.taskDescription, { color: this.state.isFinished === false ? "black" : "white" }, { textDecorationLine: this.state.isFinished === false ? 'none' : "line-through" }]} value={this.props.description} onChangeText={value => this.props.onDescriptionChange(value, this.props.id)} />
+                <TextInput style={{color: this.state.isFinished === false ? "black" : "white" }, { textDecorationLine: this.state.isFinished === false ? 'none' : "line-through" }} value={this.props.description} onChangeText={value => this.props.onDescriptionChange(value, this.props.id)} />
                 <Picker
                     selectedValue={this.props.importance}
                     style={{ height: 50, width: 220 }}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     taskTitle: {
         fontSize: 25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     taskImportance: {
         fontWeight: 'bold'
