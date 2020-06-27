@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-
+import data from './data.js'
 
 //components
 import Hededer from './components/Header.js';
@@ -18,40 +19,7 @@ export default class App extends Component {
     this.state = {
       fontsLoaded: false,
       addTaskModal: false,
-      tasks: [
-        {
-          id: '1',
-          title: 'Go to the office',
-          description: 'Make important phone calls',
-          importance: 1,
-          isFinished: false,
-          created: '01/02/2018'
-        },
-        {
-          id: '2',
-          title: 'Prepare tasks for today',
-          description: 'Make important phone calls',
-          importance: 2,
-          isFinished: false,
-          created: '12/05/2012'
-        },
-        {
-          id: '3',
-          title: 'Team meeting',
-          description: 'Make important phone calls',
-          importance: 3,
-          isFinished: false,
-          created: '03/12/1991'
-        },
-        {
-          id: '4',
-          title: 'Commit tasks changed',
-          description: 'Make important phone calls',
-          importance: 2,
-          isFinished: false,
-          created: '27/05/2008'
-        },
-      ]
+      tasks:data
     };
 
   }
@@ -81,7 +49,6 @@ export default class App extends Component {
       }]
 
     });
-    console.log(this.state.tasks)
   };
 
 
@@ -89,7 +56,6 @@ export default class App extends Component {
   deleteTask = taskId => {
     const task = this.state.tasks.filter(task => task.id != taskId);
     this.setState({ tasks: task })
-    console.log(this.state.tasks)
 
 
   };
@@ -99,7 +65,17 @@ export default class App extends Component {
     let index = tasks.findIndex(el => el.id === taskId);
     tasks[index].isFinished = !isFinished
     this.setState({ tasks });
-    console.log(this.state.tasks)
+
+  }
+
+  taskIsFinished = (id, isFinished) => {
+    
+    let tasks = [...this.state.tasks];
+    let index = tasks.findIndex(el => el.id === id);
+    tasks[index].isFinished = !isFinished
+    console.log(tasks)
+    
+    
   }
 
   onTitleChange = (inputValue, id) => {
@@ -144,22 +120,22 @@ export default class App extends Component {
           <View style={styles.bar} />
           <View style={styles.info}>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15,  fontSize: 15,fontFamily:'Oxygen' }}>Total Tasks</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen' }}>{this.state.tasks.length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Total Tasks</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.length}</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15,fontSize: 15,fontFamily:'Oxygen' }}>Remain</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen'}}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Remain</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15,fontSize: 15,fontFamily:'Oxygen' }}>Completed</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30,fontFamily:'Oxygen'}}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Completed</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
           </View>
           <View style={styles.bar} />
           <FlatList
             data={this.state.tasks}
-            renderItem={({ item }) => <Item id={item.id} created={item.created} moveUP={this.moveUP} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} title={item.title} description={item.description} importance={item.importance} />}
+            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
             keyExtractor={item => item.id}
             onDragEnd={({ tasks }) => this.setState({ tasks })}
           />
@@ -177,7 +153,7 @@ export default class App extends Component {
       return (
         <AppLoading
           startAsync={this.getFonts}
-          onFinish={() => {this.setState({fontsLoaded:true})}} />)
+          onFinish={() => { this.setState({ fontsLoaded: true }) }} />)
     }
   }
 }
@@ -193,8 +169,8 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     marginTop: 25,
-  
-    
+
+
 
   },
   bar: {
@@ -208,7 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     marginBottom: 12,
-    
+
   },
   infoContainer: {
     width: 100,
