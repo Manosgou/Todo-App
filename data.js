@@ -12,7 +12,7 @@ export default data = [
     title: 'Prepare tasks for today',
     description: 'Make important phone calls',
     importance: 2,
-    isFinished: false,
+    isFinished: true,
     created: '12/05/2012'
   },
   {

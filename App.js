@@ -68,12 +68,14 @@ export default class App extends Component {
 
   }
 
-  taskIsFinished = (id, isFinished) => {
+  taskIsFinished = (id) => {
     
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === id);
-    tasks[index].isFinished = !isFinished
-    console.log(tasks)
+    if(tasks[index].isFinished){
+      return true;
+    }
+    
     
     
   }

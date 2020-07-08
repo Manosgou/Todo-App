@@ -24,7 +24,8 @@ export default class Item extends Component {
     }
 
     componentDidMount() {
-        this.props.taskIsFinished(this.props.id, this.state.isFinished)
+        let isFinished=this.props.taskIsFinished(this.props.id);
+        this.setState({isFinished})
     }
 
 
