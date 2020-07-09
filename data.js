@@ -5,7 +5,7 @@ export default data = [
     description: 'Make important phone calls',
     importance: 1,
     isFinished: true,
-    created: '01/02/2018'
+    created: 'Jun 2, 2018'
   },
   {
     id: '2',
@@ -13,7 +13,7 @@ export default data = [
     description: 'Make important phone calls',
     importance: 2,
     isFinished: true,
-    created: '12/05/2012'
+    created: 'Mar 12, 2020'
   },
   {
     id: '3',
@@ -21,7 +21,7 @@ export default data = [
     description: 'Make important phone calls',
     importance: 3,
     isFinished: false,
-    created: '03/12/1991'
+    created: 'Sep 18, 1991'
   },
   {
     id: '4',
@@ -29,5 +29,5 @@ export default data = [
     description: 'Make important phone calls',
     importance: 2,
     isFinished: false,
-    created: '27/05/2008'
+    created: 'Aug 9, 2008'
   },]

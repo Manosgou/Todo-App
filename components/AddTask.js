@@ -3,16 +3,15 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Picker } from 'rea
 
 import { AntDesign } from '@expo/vector-icons';
 
-
 export default class AddData extends Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
             description: '',
-            importance: '',
-            date: ''
-
+            importance:'',
+            date: '',
+            
 
         };
 
@@ -30,11 +29,11 @@ export default class AddData extends Component {
 
 
     createTask() {
-        const { title, description, importance } = this.state;
+        const { title, description,importance} = this.state;
         if (title.trim() != "") {
             if (description.trim() != "") {
                 if (importance != "") {
-                    const task = { title, description, importance };
+                    const task = { title, description,importance};
                     this.props.addTask(task);
                     this.props.closeModal();
 
@@ -53,27 +52,7 @@ export default class AddData extends Component {
     }
 
     render() {
-        const Reminder = () => {
-            if (this.state.importance === '') {
-                return (
-                    <Text>Please select the level of importance</Text>
-                );
-            } else if (this.state.importance === '1') {
-                return (
-                    <Text>This task will not be remided</Text>
-                );
-            } else if (this.state.importance === '2') {
-                return (
-                    <Text>A simple notification will pop-up</Text>
-                );
-            }
-            else if (this.state.importance === '3') {
-                return (
-                    <Text>Your phone will ring</Text>
-                );
-
-            }
-        }
+       
         return (
 
             <View style={styles.mainContainer}>
@@ -109,7 +88,6 @@ export default class AddData extends Component {
                         <Picker.Item label="Less important" value="2" />
                         <Picker.Item label="Most important" value="3" />
                     </Picker>
-                    <Reminder />
                     <View style={styles.buttonContainer}>
 
                         <TouchableOpacity
@@ -149,10 +127,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         borderRadius: 30,
         backgroundColor: 'white',
-        width: '90%',
+        width: '95%',
         height: '95%',
         elevation: 3,
-        flexBasis: '65%'
+        flexBasis: '85%'
 
 
     },
@@ -191,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 15,
         justifyContent: 'space-between',
-    }, 
+    },
     closeIcon: {
         position: 'absolute',
         top: 15,

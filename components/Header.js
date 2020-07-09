@@ -22,7 +22,7 @@ export default class Header extends Component {
 
 const styles = StyleSheet.create({
     header: {
-        height: 80,
+        height: 100,
         paddingTop: 35,
         backgroundColor: 'coral',
     },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         color: 'white',
         letterSpacing: 4,
         fontFamily:'Lobster',
-        bottom:10
+        marginTop:8
         
     },
 });

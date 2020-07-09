@@ -24,8 +24,8 @@ export default class Item extends Component {
     }
 
     componentDidMount() {
-        let isFinished=this.props.taskIsFinished(this.props.id);
-        this.setState({isFinished})
+        let isFinished = this.props.taskIsFinished(this.props.id);
+        this.setState({ isFinished })
     }
 
 
@@ -34,28 +34,31 @@ export default class Item extends Component {
     render() {
 
         if (this.state.isFinished) {
-            return (
-                <View style={[styles.task, { backgroundColor: "grey" }]}>
+
+                return (
+                    <View style={[styles.task, { backgroundColor: "grey" }]}>
 
 
-                    <Text style={[styles.taskTitle, { color: "white" }, { textDecorationLine: "line-through" }]} >{this.props.title}</Text>
-                    <Text style={{ color: 'white', textDecorationLine: "line-through" }}>{this.props.description}</Text>
-                    <Text style={[styles.taskImportance, { color: "white" }, { textDecorationLine: "line-through" }]}>Importance:<Text>{this.props.importance}</Text></Text>
-                    <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
-                    <View style={styles.iconsContainer}>
-                        <View style={styles.icons}>
-                            <TouchableOpacity onPress={() => this.finishTask(this.props.id)}>
+                        <Text style={[styles.taskTitle, { color: "white" }, { textDecorationLine: "line-through" }]} >{this.props.title}</Text>
+                        <Text style={{ color: 'white', textDecorationLine: "line-through" }}>{this.props.description}</Text>
+                        <Text style={[styles.taskImportance, { color: "white" }, { textDecorationLine: "line-through" }]}>Importance:<Text>{this.props.importance}</Text></Text>
+                        <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Remind me on:<Text>{this.props.remindDate}</Text></Text>
+                        <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
+                        <View style={styles.iconsContainer}>
+                            <View style={styles.icons}>
+                                <TouchableOpacity onPress={() => this.finishTask(this.props.id)}>
 
-                                <MaterialIcons name="undo" size={27} color="white" />
+                                    <MaterialIcons name="undo" size={27} color="white" />
 
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.deleteTask(this.props.id)}>
-                                <MaterialIcons name="delete" size={27} color="white" />
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.props.deleteTask(this.props.id)}>
+                                    <MaterialIcons name="delete" size={27} color="white" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
-            );
+                );
+            
         } else {
             return (
                 <View style={[styles.task, { backgroundColor: "coral" }]}>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
+import moment from 'moment';
 import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import data from './data.js'
 
@@ -39,16 +39,16 @@ export default class App extends Component {
 
 
   addTask = task => {
-    let date = new Date()
     this.setState({
-      tasks: [...this.state.tasks, {
+      tasks: [{
         ...task,
         id: (this.state.tasks.length + 1).toString(),
         isFinished: false,
-        created: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-      }]
+        created:moment().format('ll')
+      },...this.state.tasks]
 
     });
+    console.log(this.state.tasks)
   };
 
 
@@ -137,7 +137,7 @@ export default class App extends Component {
           <View style={styles.bar} />
           <FlatList
             data={this.state.tasks}
-            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
+            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} remindDate={item.remindDate} />}
             keyExtractor={item => item.id}
             onDragEnd={({ tasks }) => this.setState({ tasks })}
           />
