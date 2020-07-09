@@ -137,7 +137,7 @@ export default class App extends Component {
           <View style={styles.bar} />
           <FlatList
             data={this.state.tasks}
-            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} remindDate={item.remindDate} />}
+            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
             keyExtractor={item => item.id}
             onDragEnd={({ tasks }) => this.setState({ tasks })}
           />

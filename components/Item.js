@@ -42,7 +42,6 @@ export default class Item extends Component {
                         <Text style={[styles.taskTitle, { color: "white" }, { textDecorationLine: "line-through" }]} >{this.props.title}</Text>
                         <Text style={{ color: 'white', textDecorationLine: "line-through" }}>{this.props.description}</Text>
                         <Text style={[styles.taskImportance, { color: "white" }, { textDecorationLine: "line-through" }]}>Importance:<Text>{this.props.importance}</Text></Text>
-                        <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Remind me on:<Text>{this.props.remindDate}</Text></Text>
                         <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
                         <View style={styles.iconsContainer}>
                             <View style={styles.icons}>
