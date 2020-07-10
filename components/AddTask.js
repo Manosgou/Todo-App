@@ -84,9 +84,9 @@ export default class AddData extends Component {
                         style={{ height: 50, width: 220 }}
                         onValueChange={value => this.handleInputChange('importance', value)}>
                         <Picker.Item label="Level of importance" value="0" color="grey" />
-                        <Picker.Item label="Least important" value="1" />
-                        <Picker.Item label="Less important" value="2" />
-                        <Picker.Item label="Most important" value="3" />
+                        <Picker.Item label="Least important" value="#46A346" />
+                        <Picker.Item label="Less important" value="#FFB62F" />
+                        <Picker.Item label="Most important" value="#FF3232" />
                     </Picker>
                     <View style={styles.buttonContainer}>
 
