@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import moment from 'moment';
-import Realm from 'realm';
-import './database.js'
 import { StyleSheet, Text, View, Modal, FlatList} from 'react-native';
 
 import data from './data.js'
@@ -50,15 +48,7 @@ export default class App extends Component {
       }, ...this.state.tasks]
 
     });
-    Realm.open({schema: [TasksListSchema, TaskSchema]})
-    .then(realm => {
-      realm.write(() => {
-        realm.create('TASKS_LIST_SCHEMA', {task});
-      });
-      realm.close();
-    }).catch(error => {
-      console.log(error);
-    });
+    console.log(this.state.tasks)
   };
 
 
