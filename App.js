@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import moment from 'moment';
-import Realm from 'realm';
 import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
 
 import data from './data.js'
