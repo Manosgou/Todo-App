@@ -22,7 +22,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": false,
+      "bundleIdentifier": "com.manosgou.todo"
+    },
+    "android": {
+      "package": "com.manosgou.todo"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
