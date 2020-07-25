@@ -3,7 +3,6 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
     "eject": "expo eject"
   },
   "dependencies": {
@@ -13,7 +12,8 @@
     "react-dom": "16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-action-button": "^2.8.5",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "realm": "^6.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

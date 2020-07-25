@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import moment from 'moment';
-import { StyleSheet, Text, View, Modal, FlatList} from 'react-native';
+import Realm from 'realm';
+import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
 
 import data from './data.js'
 
@@ -19,7 +20,7 @@ export default class App extends Component {
     this.state = {
       fontsLoaded: false,
       addTaskModal: false,
-      tasks: data
+      tasks:data
     };
 
   }
@@ -37,7 +38,6 @@ export default class App extends Component {
   }
 
 
-
   addTask = task => {
     this.setState({
       tasks: [{
@@ -48,7 +48,6 @@ export default class App extends Component {
       }, ...this.state.tasks]
 
     });
-    console.log(this.state.tasks)
   };
 
 
@@ -56,8 +55,6 @@ export default class App extends Component {
   deleteTask = taskId => {
     const task = this.state.tasks.filter(task => task.id != taskId);
     this.setState({ tasks: task })
-
-
   };
 
   finishTask = (taskId, isFinished) => {
@@ -135,13 +132,13 @@ export default class App extends Component {
             </View>
           </View>
           <View style={styles.bar} />
-            <FlatList
-              keyboardShouldPersistTabs='handled'
-              data={this.state.tasks}
-              renderItem={({ item }) =><Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
-              keyExtractor={item => item.id}
-              onDragEnd={({ tasks }) => this.setState({ tasks })}
-            />
+          <FlatList
+            keyboardShouldPersistTabs='handled'
+            data={this.state.tasks}
+            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
+            keyExtractor={item => item.id}
+            onDragEnd={({ tasks }) => this.setState({ tasks })}
+          />
           <FloatActionButton buttonState={this.state.addTaskModal} onFABPress={() => this.onPresstoggleAddTaskModal()} />
         </View>
 
