@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import moment from 'moment';
+import { AntDesign } from '@expo/vector-icons'; 
 import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
 
 import data from './data.js'
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 //components
 import Hededer from './components/Header.js';
@@ -19,7 +22,7 @@ export default class App extends Component {
     this.state = {
       fontsLoaded: false,
       addTaskModal: false,
-      tasks:data
+      tasks: []
     };
 
   }
@@ -30,6 +33,33 @@ export default class App extends Component {
   });
 
 
+  async componentDidMount() {
+    //await AsyncStorage.clear()
+    let keys = []
+    try {
+      keys = await AsyncStorage.getAllKeys()
+    } catch (e) {
+      console.log("error:Keys cannot be retrieved")
+    }
+
+    let  item,newItem;
+    for (let i in keys) {
+      try {
+        
+        item = await AsyncStorage.getItem(keys[i])
+        newItem =JSON.parse(item)
+        console.log(newItem)
+        this.setState({ tasks: [...this.state.tasks, newItem] })
+        
+
+      } catch (e) {
+        console.log("error:Tasks cannot be retrieved")
+      }
+      
+
+    }
+    
+  }
 
 
   onPresstoggleAddTaskModal() {
@@ -37,37 +67,59 @@ export default class App extends Component {
   }
 
 
-  addTask = task => {
+  addTask = async task => {
+    let id = Math.random().toString();
     this.setState({
       tasks: [{
         ...task,
-        id: (this.state.tasks.length + 1).toString(),
+        id: id,
         isFinished: false,
         created: moment().format('ll')
       }, ...this.state.tasks]
 
     });
+    let taskObj = {
+      ...task,
+      id:id,
+      isFinished: false,
+      created: moment().format('ll')
+    }
+    console.log(taskObj)
+    try {
+      await AsyncStorage.setItem("@" + taskObj.id, JSON.stringify(taskObj))
+    } catch (e) {
+      console.log("error:Task cannot be saved")
+    }
   };
 
 
 
-  deleteTask = taskId => {
+  deleteTask = async taskId => {
     const task = this.state.tasks.filter(task => task.id != taskId);
     this.setState({ tasks: task })
+    try {
+      await AsyncStorage.removeItem('@' + taskId)
+    } catch (e) {
+      console.log("error:Task cannot be deleted")
+    }
   };
 
-  finishTask = (taskId, isFinished) => {
+  finishTask = async (taskId, isFinished) => {
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === taskId);
     tasks[index].isFinished = !isFinished
     this.setState({ tasks });
+    try {
+      await AsyncStorage.mergeItem('@'+taskId,JSON.stringify(tasks[index]))
+    } catch (e) {
+      console.log("error:Task's title cannot be updated")
+    }
+}
 
-  }
-
-  taskIsFinished = (id) => {
+  taskIsFinished = taskId => {
 
     let tasks = [...this.state.tasks];
-    let index = tasks.findIndex(el => el.id === id);
+    let index = tasks.findIndex(el => el.id === taskId);
     if (tasks[index].isFinished) {
       return true;
     }
@@ -76,21 +128,31 @@ export default class App extends Component {
 
   }
 
-  onTitleChange = (inputValue, id) => {
+  onTitleChange = async (inputValue, id) => {
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === id);
     tasks[index].title = inputValue
     this.setState({ tasks })
+    try {
+      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+    } catch (e) {
+      console.log("error:Task's title cannot be updated")
+    }
   }
 
-  onDescriptionChange = (inputValue, id) => {
+  onDescriptionChange = async (inputValue, id) => {
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === id);
     tasks[index].description = inputValue
     this.setState({ tasks })
+    try {
+      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+    } catch (e) {
+      console.log("error:Task's description cannot be updated")
+    }
   }
 
-  onImportanceChange = (inputValue, id) => {
+  onImportanceChange = async (inputValue, id) => {
     let tasks = [...this.state.tasks];
     let index = tasks.findIndex(el => el.id === id);
     if (inputValue != 0) {
@@ -98,6 +160,11 @@ export default class App extends Component {
     }
 
     this.setState({ tasks })
+    try {
+      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+    } catch (e) {
+      console.log("error:Task's importance cannot be updated")
+    }
   }
 
   render() {
@@ -131,13 +198,19 @@ export default class App extends Component {
             </View>
           </View>
           <View style={styles.bar} />
-          <FlatList
-            keyboardShouldPersistTabs='handled'
-            data={this.state.tasks}
-            renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
-            keyExtractor={item => item.id}
-            onDragEnd={({ tasks }) => this.setState({ tasks })}
-          />
+          {this.state.tasks.length == 0 ?
+            <View style={{flex:1,justifyContent:'center',opacity:0.2}}>
+              <AntDesign  style={{textAlign:'center'}} name="inbox" size={65} color="black" />
+              <Text style={{textAlign:'center'}}>No tasks for today!</Text>
+            </View> :
+            <FlatList
+              keyboardShouldPersistTabs='handled'
+              data={this.state.tasks}
+              renderItem={({ item }) => <Item id={item.id} created={item.created} onTitleChange={this.onTitleChange} onDescriptionChange={this.onDescriptionChange} onImportanceChange={this.onImportanceChange} deleteTask={this.deleteTask} finishTask={this.finishTask} taskIsFinished={this.taskIsFinished} title={item.title} description={item.description} importance={item.importance} />}
+              keyExtractor={item => item.id}
+              onDragEnd={({ tasks }) => this.setState({ tasks })}
+            />}
+
           <FloatActionButton buttonState={this.state.addTaskModal} onFABPress={() => this.onPresstoggleAddTaskModal()} />
         </View>
 
