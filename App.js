@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import moment from 'moment';
-import { AntDesign } from '@expo/vector-icons'; 
-import { StyleSheet, Text, View, Modal, FlatList } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { StyleSheet, Text, View, Modal, FlatList, SafeAreaView } from 'react-native';
 
 import data from './data.js'
 
@@ -14,6 +14,7 @@ import Hededer from './components/Header.js';
 import AddTask from './components/AddTask.js';
 import FloatActionButton from './components/FloatActionButton.js';
 import Item from './components/Item.js';
+import DeleteTasks from './components/DeleteTasks.js'
 
 
 export default class App extends Component {
@@ -22,7 +23,8 @@ export default class App extends Component {
     this.state = {
       fontsLoaded: false,
       addTaskModal: false,
-      tasks: []
+      deleteTasks: false,
+      tasks: [],
     };
 
   }
@@ -32,38 +34,48 @@ export default class App extends Component {
     'Oxygen': require('./assets/fonts/Oxygen-Bold.ttf'),
   });
 
-
-  async componentDidMount() {
-    //await AsyncStorage.clear()
+  getKeys = async () => {
     let keys = []
     try {
       keys = await AsyncStorage.getAllKeys()
     } catch (e) {
       console.log("error:Keys cannot be retrieved")
     }
+    return keys;
 
-    let  item,newItem;
+  }
+
+
+  async componentDidMount() {
+    //await AsyncStorage.clear()
+    let keys = await this.getKeys()
+
+    let item, newItem;
     for (let i in keys) {
       try {
-        
+
         item = await AsyncStorage.getItem(keys[i])
-        newItem =JSON.parse(item)
+        newItem = JSON.parse(item)
         console.log(newItem)
         this.setState({ tasks: [...this.state.tasks, newItem] })
-        
+
 
       } catch (e) {
         console.log("error:Tasks cannot be retrieved")
       }
-      
+
 
     }
-    
+
   }
 
 
   onPresstoggleAddTaskModal() {
     this.setState({ addTaskModal: !this.state.addTaskModal });
+  }
+
+  onPresstoggleDeleteTasks() {
+    this.setState({ deleteTasks: !this.state.deleteTasks });
   }
 
 
@@ -80,7 +92,7 @@ export default class App extends Component {
     });
     let taskObj = {
       ...task,
-      id:id,
+      id: id,
       isFinished: false,
       created: moment().format('ll')
     }
@@ -110,11 +122,11 @@ export default class App extends Component {
     tasks[index].isFinished = !isFinished
     this.setState({ tasks });
     try {
-      await AsyncStorage.mergeItem('@'+taskId,JSON.stringify(tasks[index]))
+      await AsyncStorage.mergeItem('@' + taskId, JSON.stringify(tasks[index]))
     } catch (e) {
       console.log("error:Task's title cannot be updated")
     }
-}
+  }
 
   taskIsFinished = taskId => {
 
@@ -134,7 +146,7 @@ export default class App extends Component {
     tasks[index].title = inputValue
     this.setState({ tasks })
     try {
-      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+      await AsyncStorage.mergeItem('@' + id, JSON.stringify(tasks[index]))
     } catch (e) {
       console.log("error:Task's title cannot be updated")
     }
@@ -146,7 +158,7 @@ export default class App extends Component {
     tasks[index].description = inputValue
     this.setState({ tasks })
     try {
-      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+      await AsyncStorage.mergeItem('@' + id, JSON.stringify(tasks[index]))
     } catch (e) {
       console.log("error:Task's description cannot be updated")
     }
@@ -161,19 +173,45 @@ export default class App extends Component {
 
     this.setState({ tasks })
     try {
-      await AsyncStorage.mergeItem('@'+id,JSON.stringify(tasks[index]))
+      await AsyncStorage.mergeItem('@' + id, JSON.stringify(tasks[index]))
     } catch (e) {
       console.log("error:Task's importance cannot be updated")
     }
   }
 
+  async deleteTasks() {
+    this.setState({ tasks: [] })
+
+    let keys = await this.getKeys()
+
+    for (let i in keys) {
+      try {
+
+        await AsyncStorage.removeItem(keys[i])
+
+
+      } catch (e) {
+        console.log("error:Tasks cannot be retrieved")
+      }
+    }
+    this.onPresstoggleDeleteTasks()
+  }
   render() {
     if (this.state.fontsLoaded) {
 
       return (
 
-        <View style={{ flex: 1 }}>
-          <Hededer />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Hededer deleteTasks={() => this.onPresstoggleDeleteTasks()} />
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.state.deleteTasks}
+            onRequestClose={() => this.onPresstoggleDeleteTasks()}
+          >
+            <DeleteTasks deleteTasks={() => this.deleteTasks()} closeModal={() => this.onPresstoggleDeleteTasks()} />
+
+          </Modal>
           <Modal animationType="slide"
             transparent={true}
             visible={this.state.addTaskModal}
@@ -186,22 +224,22 @@ export default class App extends Component {
           <View style={styles.info}>
             <View style={styles.infoContainer}>
               <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Total Tasks</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Remain</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Completed</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
           </View>
           <View style={styles.bar} />
           {this.state.tasks.length == 0 ?
-            <View style={{flex:1,justifyContent:'center',opacity:0.2}}>
-              <AntDesign  style={{textAlign:'center'}} name="inbox" size={65} color="black" />
-              <Text style={{textAlign:'center'}}>No tasks for today!</Text>
+            <View style={{ flex: 1, justifyContent: 'center', opacity: 0.2 }}>
+              <AntDesign style={{ textAlign: 'center' }} name="inbox" size={65} color="black" />
+              <Text style={{ textAlign: 'center' }}>No tasks for today!</Text>
             </View> :
             <FlatList
               keyboardShouldPersistTabs='handled'
@@ -212,7 +250,7 @@ export default class App extends Component {
             />}
 
           <FloatActionButton buttonState={this.state.addTaskModal} onFABPress={() => this.onPresstoggleAddTaskModal()} />
-        </View>
+        </SafeAreaView>
 
 
 
@@ -257,7 +295,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: 100,
     height: 100,
-    backgroundColor: 'coral',
+    backgroundColor: '#D95525',
     borderRadius: 25,
     elevation: 2
 

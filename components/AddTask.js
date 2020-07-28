@@ -9,9 +9,9 @@ export default class AddData extends Component {
         this.state = {
             title: '',
             description: '',
-            importance:'',
+            importance: '',
             date: '',
-            
+
 
         };
 
@@ -29,11 +29,11 @@ export default class AddData extends Component {
 
 
     createTask() {
-        const { title, description,importance} = this.state;
+        const { title, description, importance } = this.state;
         if (title.trim() != "") {
             if (description.trim() != "") {
                 if (importance != "") {
-                    const task = { title, description,importance};
+                    const task = { title, description, importance };
                     this.props.addTask(task);
                     this.props.closeModal();
 
@@ -52,7 +52,7 @@ export default class AddData extends Component {
     }
 
     render() {
-       
+
         return (
 
             <View style={styles.mainContainer}>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 100,
         height: 40,
-        backgroundColor: 'coral',
+        backgroundColor: '#D95525',
         borderRadius: 50,
         elevation: 2
     },

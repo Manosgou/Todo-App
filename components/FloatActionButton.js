@@ -34,7 +34,7 @@ export default class FloatActionButton extends Component{
         justifyContent: 'center',
         width: 70,
         height: 70,
-        backgroundColor: 'coral',
+        backgroundColor: '#D95525',
         borderRadius: 50,
         elevation:5
       },

@@ -64,7 +64,7 @@ export default class Item extends Component {
 
         } else {
             return (
-                <View style={[styles.task, { backgroundColor: "coral" }]}>
+                <View style={[styles.task, { backgroundColor: "#D95525" }]}>
 
 
 
