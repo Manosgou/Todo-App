@@ -180,21 +180,26 @@ export default class App extends Component {
   }
 
   async deleteTasks() {
-    this.setState({ tasks: [] })
+    if (this.state.tasks.length === 0) {
+      alert("There are no tasks to delete")
+      this.onPresstoggleDeleteTasks()
+    } else {
+      this.setState({ tasks: [] })
 
-    let keys = await this.getKeys()
+      let keys = await this.getKeys()
 
-    for (let i in keys) {
-      try {
+      for (let i in keys) {
+        try {
 
-        await AsyncStorage.removeItem(keys[i])
+          await AsyncStorage.removeItem(keys[i])
 
 
-      } catch (e) {
-        console.log("error:Tasks cannot be retrieved")
+        } catch (e) {
+          console.log("error:Tasks cannot be retrieved")
+        }
       }
+      this.onPresstoggleDeleteTasks()
     }
-    this.onPresstoggleDeleteTasks()
   }
   render() {
     if (this.state.fontsLoaded) {
