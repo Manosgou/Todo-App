@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput, Picker, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, TextInput, Picker, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
@@ -44,7 +44,7 @@ export default class Item extends Component {
                     <Text style={{ color: 'white', textDecorationLine: "line-through" }}>{this.props.description}</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[styles.taskImportance, { color: "white" }, { textDecorationLine: "line-through" }]}>Importance:</Text>
-                        <View style={{ marginTop: 2,marginLeft:4, width: 17, height: 17, borderRadius: 25, backgroundColor: '#737373' }} />
+                        <View style={{ marginTop: 2, marginLeft: 4, width: 17, height: 17, borderRadius: 25, backgroundColor: '#737373' }} />
                     </View>
                     <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
                     <View style={styles.iconsContainer}>
@@ -68,21 +68,24 @@ export default class Item extends Component {
 
 
 
-                        <TextInput placeholder="Insert a title" placeholderTextColor="#202020" maxLength={27} style={[styles.taskTitle, { color: "black" }, { textDecorationLine: 'none' }]} value={this.props.title} onChangeText={value => this.props.onTitleChange(value, this.props.id)} />
-                        <TextInput placeholder="Insert a description" placeholderTextColor="#202020" multiline={true} numberOfLines={3} style={{ color: "black" }, { textDecorationLine: 'none' }} value={this.props.description} onChangeText={value => this.props.onDescriptionChange(value, this.props.id)} />
-                    
+                    <TextInput placeholder="Insert a title" placeholderTextColor="#202020" maxLength={27} style={[styles.taskTitle, { color: "black" }, { textDecorationLine: 'none' }]} value={this.props.title} onChangeText={value => this.props.onTitleChange(value, this.props.id)} />
+                    <TextInput placeholder="Insert a description" placeholderTextColor="#202020" multiline={true} numberOfLines={3} style={{ color: "black" }, { textDecorationLine: 'none' }} value={this.props.description} onChangeText={value => this.props.onDescriptionChange(value, this.props.id)} />
+
                     <Picker
                         selectedValue={this.props.importance}
                         style={{ height: 50, width: 220 }}
                         onValueChange={value => this.props.onImportanceChange(value, this.props.id)}>
                         <Picker.Item label="Level of importance" value="0" color="#4C4C4C" />
-                        <Picker.Item label="Least important" value="#46A346" />
-                        <Picker.Item label="Less important" value="#FFB62F" />
-                        <Picker.Item label="Most important" value="#FF3232" />
+                        <Picker.Item label="Least important" value="#46A346/LOW" />
+                        <Picker.Item label="Less important" value="#FFB62F/MEDIUM" />
+                        <Picker.Item label="Most important" value="#FF3232/HIGH" />
                     </Picker>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={[styles.taskImportance, { color: "black" }, { textDecorationLine: 'none' }]}>Importance:</Text>
-                        <View style={{ marginTop: 2,marginLeft:4, width: 17, height: 17, borderRadius: 25, backgroundColor: this.props.importance, elevation: 2 }} />
+
+                        <View style={{ marginTop: 2, marginLeft: 4, width: 70, height: 20, borderRadius: 7, backgroundColor: this.props.importance.split('/')[0], elevation: 2 }} >
+                            <Text style={{textAlign:'center',color:'white',fontWeight:'700'}}>{this.props.importance.split('/')[1]}</Text>
+                        </View>
                     </View>
                     <Text style={[styles.taskCreated, { color: "black" }, { textDecorationLine: 'none' }]}>Created:<Text>{this.props.created}</Text></Text>
                     <View style={styles.iconsContainer}>
@@ -98,7 +101,7 @@ export default class Item extends Component {
                         </View>
                     </View>
                 </View>
-                
+
             );
         }
 

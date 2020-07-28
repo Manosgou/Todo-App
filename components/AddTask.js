@@ -84,10 +84,13 @@ export default class AddData extends Component {
                         style={{ height: 50, width: 220 }}
                         onValueChange={value => this.handleInputChange('importance', value)}>
                         <Picker.Item label="Level of importance" value="0" color="grey" />
-                        <Picker.Item label="Least important" value="#46A346" />
-                        <Picker.Item label="Less important" value="#FFB62F" />
-                        <Picker.Item label="Most important" value="#FF3232" />
-                    </Picker>
+                        <Picker.Item label="Least important" value="#46A346/LOW" />
+                        <Picker.Item label="Less important" value="#FFB62F/MEDIUM" />
+                        <Picker.Item label="Most important" value="#FF3232/HIGH" />
+                    </Picker>{this.state.importance == '' ? null : <View style={{ marginTop: 2, marginLeft: 4, width: 70, height: 20, borderRadius: 7, backgroundColor: this.state.importance.split('/')[0], elevation: 2 }} >
+                        <Text style={{ textAlign: 'center', color: 'white', fontWeight: '700' }}>{this.state.importance.split('/')[1]}</Text>
+                    </View>}
+
                     <View style={styles.buttonContainer}>
 
                         <TouchableOpacity
