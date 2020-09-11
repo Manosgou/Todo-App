@@ -5,7 +5,7 @@ import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import { StyleSheet, Text, View, Modal, FlatList, SafeAreaView } from 'react-native';
 
-import data from './data.js'
+//import data from './data.js'
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -179,7 +179,7 @@ export default class App extends Component {
     }
   }
 
-  async deleteTasks() {
+   deleteTasks= async()=> {
     if (this.state.tasks.length === 0) {
       alert("There are no tasks to delete")
       this.onPresstoggleDeleteTasks()
