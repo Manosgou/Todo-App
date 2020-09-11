@@ -5,7 +5,6 @@ import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import { StyleSheet, Text, View, Modal, FlatList, SafeAreaView } from 'react-native';
 
-//import data from './data.js'
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -32,6 +31,7 @@ export default class App extends Component {
   getFonts = () => Font.loadAsync({
     'Lobster': require('./assets/fonts/Lobster-Regular.ttf'),
     'Oxygen': require('./assets/fonts/Oxygen-Bold.ttf'),
+    'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
   });
 
   getKeys = async () => {
@@ -228,23 +228,23 @@ export default class App extends Component {
           <View style={styles.bar} />
           <View style={styles.info}>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Total Tasks</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Poppins-Medium' }}>Total Tasks</Text>
+              <Text style={{ textAlign: 'center', marginTop: 5, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length}</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Remain</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Poppins-Medium' }}>Remain</Text>
+              <Text style={{ textAlign: 'center', marginTop: 5, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.length - this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Oxygen' }}>Completed</Text>
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
+              <Text style={{ textAlign: 'center', marginTop: 15, fontSize: 15, fontFamily: 'Poppins-Medium' }}>Completed</Text>
+              <Text style={{ textAlign: 'center', marginTop: 5, fontSize: 30, fontFamily: 'Oxygen', color: 'white' }}>{this.state.tasks.filter(function (s) { return s.isFinished; }).length}</Text>
             </View>
           </View>
           <View style={styles.bar} />
           {this.state.tasks.length == 0 ?
             <View style={{ flex: 1, justifyContent: 'center', opacity: 0.2 }}>
               <AntDesign style={{ textAlign: 'center' }} name="inbox" size={65} color="black" />
-              <Text style={{ textAlign: 'center' }}>No tasks for today!</Text>
+              <Text style={{ textAlign: 'center',fontFamily: 'Poppins-Medium' }}>No tasks for today!</Text>
             </View> :
             <FlatList
               keyboardShouldPersistTabs='handled'
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     marginTop: 25,
+    fontFamily:'Poppins-Medium'
 
 
 
