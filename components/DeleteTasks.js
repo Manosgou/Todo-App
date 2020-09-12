@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: '40%',
         elevation: 3,
+        
 
 
     },
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     },
     buttonsText: {
         color: '#B33A3A',
-        fontSize: 15
+        fontSize: 15,
+        fontFamily:'Poppins-Medium'
     }
 })

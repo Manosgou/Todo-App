@@ -9,12 +9,10 @@ export default class Item extends Component {
         super(props);
         this.state = {
             isFinished: false,
-
-
         }
 
     }
-    finishTask(id) {
+    finishTask = (id)=> {
         this.setState({ isFinished: !this.state.isFinished })
         this.props.finishTask(id, this.state.isFinished);
 
@@ -40,13 +38,13 @@ export default class Item extends Component {
                 <View style={[styles.task, { backgroundColor: "grey" }]}>
 
 
-                    <Text style={[styles.taskTitle, { color: "white" }, { textDecorationLine: "line-through" }]} >{this.props.title}</Text>
-                    <Text style={{ color: 'white', textDecorationLine: "line-through" }}>{this.props.description}</Text>
+                    <Text style={[styles.taskTitle, { color: "#fff" }, { textDecorationLine: "line-through" }]} >{this.props.title}</Text>
+                    <Text style={{color: "#fff", textDecorationLine: "line-through" }}>{this.props.description}</Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={[styles.taskImportance, { color: "white" }, { textDecorationLine: "line-through" }]}>Importance:</Text>
+                        <Text style={[styles.taskImportance, { color: "#fff" }, { textDecorationLine: "line-through" }]}>Importance:</Text>
                         <View style={{ marginTop: 2, marginLeft: 4, width: 17, height: 17, borderRadius: 25, backgroundColor: '#737373' }} />
                     </View>
-                    <Text style={[styles.taskCreated, { color: "white" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
+                    <Text style={[styles.taskCreated, { color: "#fff" }, { textDecorationLine: "line-through" }]}>Created:<Text>{this.props.created}</Text></Text>
                     <View style={styles.iconsContainer}>
                         <View style={styles.icons}>
                             <TouchableOpacity onPress={() => this.finishTask(this.props.id)}>
@@ -68,7 +66,7 @@ export default class Item extends Component {
 
 
 
-                    <TextInput placeholder="Insert a title" placeholderTextColor="#202020" maxLength={27} style={[styles.taskTitle, { color: "black" }, { textDecorationLine: 'none' }]} value={this.props.title} onChangeText={value => this.props.onTitleChange(value, this.props.id)} />
+                    <TextInput placeholder="Insert a title" placeholderTextColor="#202020" maxLength={30} style={[styles.taskTitle, { color: "black" }, { textDecorationLine: 'none' }]} value={this.props.title} onChangeText={value => this.props.onTitleChange(value, this.props.id)} />
                     <TextInput placeholder="Insert a description" placeholderTextColor="#202020" multiline={true} numberOfLines={3} style={{ color: "black" }, { textDecorationLine: 'none' }} value={this.props.description} onChangeText={value => this.props.onDescriptionChange(value, this.props.id)} />
 
                     <Picker
@@ -121,12 +119,9 @@ const styles = StyleSheet.create({
     },
     taskTitle: {
         fontSize: 25,
-        fontWeight: 'bold',
-        alignSelf: 'flex-start'
     },
     taskImportance: {
-        fontWeight: 'bold',
-        alignSelf: 'flex-start'
+        fontFamily:'Poppins-Medium'
 
     },
     taskCreated: {

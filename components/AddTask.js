@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
+  Switch,
 } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ export default class AddData extends Component {
       importance: "",
       importanceError: "",
       date: "",
+      isDatePickerVisible: false,
     };
   }
 
@@ -49,14 +51,20 @@ export default class AddData extends Component {
       taskIsValid = false;
       this.setState({ importanceError: "Please select task's importance" });
     }
+
     return taskIsValid;
   };
   createTask = () => {
     if (this.handleValidation()) {
+      const { title, description, importance } = this.state;
       const task = { title, description, importance };
       this.props.addTask(task);
       this.props.closeModal();
     }
+  };
+
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: !this.state.isDatePickerVisible });
   };
 
   render() {
@@ -117,6 +125,7 @@ export default class AddData extends Component {
               color="#FF3232"
             />
           </Picker>
+
           <Text style={{ color: "red" }}>{this.state.importanceError}</Text>
           {this.state.importance == "" ? null : (
             <View
@@ -142,7 +151,16 @@ export default class AddData extends Component {
               </Text>
             </View>
           )}
-
+          <View style={{flexDirection: 'row'}}>
+            <Text>Remind me:</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "coral" }}
+              thumbColor={this.state.isDatePickerVisible ? "coral" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={this.showDatePicker}
+              value={this.state.isDatePickerVisible}
+            />
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.buttons}
