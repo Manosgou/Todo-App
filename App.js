@@ -322,6 +322,7 @@ export default class App extends Component {
               renderItem={({ item }) => (
                 <Item
                   id={item.id}
+                  remind={item.remindDate}
                   created={item.created}
                   onTitleChange={this.onTitleChange}
                   onDescriptionChange={this.onDescriptionChange}

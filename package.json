@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/datetimepicker": "^3.0.2",
     "expo": "^38.0.0",
     "expo-splash-screen": "^0.3.1",
     "expo-status-bar": "^1.0.0",
@@ -16,6 +17,7 @@
     "react-native": "0.62.2",
     "react-native-action-button": "^2.8.5",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-modal-datetime-picker": "^8.9.3",
     "react-native-reanimated": "~1.9.0",
     "react-native-screens": "~2.9.0",
     "react-native-unimodules": "~0.10.1",

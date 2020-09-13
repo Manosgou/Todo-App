@@ -9,8 +9,8 @@ import {
   Switch,
 } from "react-native";
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { AntDesign } from "@expo/vector-icons";
-
 export default class AddData extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +22,7 @@ export default class AddData extends Component {
       importance: "",
       importanceError: "",
       date: "",
+      remindDate: "",
       isDatePickerVisible: false,
     };
   }
@@ -56,8 +57,8 @@ export default class AddData extends Component {
   };
   createTask = () => {
     if (this.handleValidation()) {
-      const { title, description, importance } = this.state;
-      const task = { title, description, importance };
+      const { title, description, importance,remindDate } = this.state;
+      const task = { title, description, importance,remindDate };
       this.props.addTask(task);
       this.props.closeModal();
     }
@@ -67,6 +68,16 @@ export default class AddData extends Component {
     this.setState({ isDatePickerVisible: !this.state.isDatePickerVisible });
   };
 
+  selectDate = (date) => {
+    var dateString =
+      date.getUTCDate() +
+      "/" +
+      (date.getUTCMonth() + 1) +
+      "/" +
+      date.getUTCFullYear()
+    this.setState({ remindDate: dateString });
+    this.showDatePicker();
+  };
   render() {
     return (
       <View style={styles.mainContainer}>
@@ -151,7 +162,7 @@ export default class AddData extends Component {
               </Text>
             </View>
           )}
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: "row" }}>
             <Text>Remind me:</Text>
             <Switch
               trackColor={{ false: "#767577", true: "coral" }}
@@ -161,6 +172,13 @@ export default class AddData extends Component {
               value={this.state.isDatePickerVisible}
             />
           </View>
+          <DateTimePickerModal
+            mode="date"
+            isVisible={this.state.isDatePickerVisible}
+            onConfirm={this.selectDate}
+            onCancel={this.showDatePicker}
+          />
+          <Text>{this.state.remindDate.toString()}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.buttons}
